@@ -1,84 +1,12 @@
+
 ---
 - name: Configure pay-api web nodes
   hosts: webservers
   become: yes
-  tasks:
-    - name: Install httpd on CentOS
-      ansible.builtin.yum:
-        name: httpd
-        state: present
-      when: ansible_os_family == "RedHat"
+  roles:
+    - pay-api
 
-    - name: Install apache2 on Ubuntu
-      ansible.builtin.apt:
-        name: apache2
-        state: present
-        update_cache: yes
-      when: ansible_os_family == "Debian"
-
-    - name: Start the web service on CentOS
-      ansible.builtin.service:
-        name: httpd
-	 state: started
-        enabled: yes
-      when: ansible_os_family == "RedHat"
-
-    - name: Start the web service on Ubuntu
-      ansible.builtin.service:
-        name: apache2
-        state: started
-        enabled: yes
-      when: ansible_os_family == "Debian"
-
-    - name: Install standard tools on CentOS
-      ansible.builtin.yum:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - git
-        - wget
-        - zip
-        - unzip
-      when: ansible_os_family == "RedHat"
-
-     - name: Install standard tools on Ubuntu
-      ansible.builtin.apt:
-        name: "{{ item }}"
-        state: present
-        update_cache: yes
-      loop:
-        - git
-        - wget
-        - zip
-        - unzip
-      when: ansible_os_family == "Debian"
-
-    - name: Deploy custom welcome page on CentOS
-      ansible.builtin.template:
-        src: templates/index.html.j2
-        dest: /var/www/html/index.html
-        backup: yes
-      notify: Restart web service
-      when: ansible_os_family == "RedHat"
-    
-    
-  - name: Deploy custom welcome page on Ubuntu
-      ansible.builtin.template:
-        src: templates/index.html.j2
-        dest: /var/www/html/index.html
-        backup: yes
-      notify: Restart web service on Ubuntu
-      when: ansible_os_family == "Debian"
-
-  handlers:
-    - name: Restart web service
-      ansible.builtin.service:
-        name: httpd
-        state: restarted
-      when: ansible_os_family == "RedHat"
-
-    - name: Restart web service on Ubuntu
-      ansible.builtin.service:
-        name: apache2
-        state: restarted
-      when: ansible_os_family == "Debian"
+- hosts: db
+  become: true
+  roles:
+    - pay-db
