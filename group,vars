@@ -2,3 +2,13 @@ project_name: pay-api
 environment_name: staging
 team_email: devops@payapi.example.com
 app_version: "1.1.0"
+
+db_package: mariadb-server
+db_service: mariadb
+db_port: 3306
+
+web_package_debian: apache2
+web_package_redhat: httpd
+
+status_page_path: /var/www/html/index.html
+
