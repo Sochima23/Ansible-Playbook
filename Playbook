@@ -6,7 +6,7 @@
   roles:
     - pay-api
 
-- hosts: db
+- hosts: dbservers
   become: true
   roles:
     - pay-db
