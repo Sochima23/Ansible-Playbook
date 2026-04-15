@@ -1,4 +1,3 @@
-  handlers:
     - name: Restart web service
       ansible.builtin.service:
         name: httpd
