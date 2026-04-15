@@ -5,6 +5,7 @@ app_version: "1.1.0"
 
 db_package: mariadb-server
 db_service: mariadb
+db_name: payapi_staging
 db_port: 3306
 
 web_package_debian: apache2
