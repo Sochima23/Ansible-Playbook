@@ -1,0 +1,12 @@
+- name: Install MariaDB on Amazon Linux
+  dnf:
+    name: mariadb105-server
+    state: present
+  when: ansible_distribution == "Amazon"
+
+- name: Ensure MariaDB is started and enabled
+  service:
+    name: "{{ db_service }}"
+    state: started
+    enabled: true
+
