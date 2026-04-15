@@ -1,0 +1,19 @@
+  tasks:
+    - name: Install httpd on CentOS
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Install apache2 on Ubuntu
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Start the web service on CentOS
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
