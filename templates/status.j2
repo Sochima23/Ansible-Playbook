@@ -1,0 +1,12 @@
+<html>
+  <head><title>System Status</title></head>
+  <body>
+    <h1>Web Server Status</h1>
+    <p>Hostname: {{ inventory_hostname }}</p>
+
+    <h2>Database Info</h2>
+    <p>DB Host: {{ hostvars['pay-db01'].ansible_host | default('N/A') }}</p>
+    <p>DB Service: {{ db_service }}</p>
+    <p>DB Port: {{ db_port }}</p>
+  </body>
+</html>
