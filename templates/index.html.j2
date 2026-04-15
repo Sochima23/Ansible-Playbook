@@ -1,0 +1,17 @@
+NU nano 6.2                      index.html.j2
+    - name: Deploy custom welcome page on CentOS
+      ansible.builtin.template:
+        src: templates/index.html.j2
+        dest: /var/www/html/index.html
+        backup: yes
+      notify: Restart web service
+      when: ansible_os_family == "RedHat"
+
+
+    - name: Deploy custom welcome page on Ubuntu
+      ansible.builtin.template:
+        src: templates/index.html.j2
+        dest: /var/www/html/index.html
+        backup: yes
+      notify: Restart web service on Ubuntu
+      when: ansible_os_family == "Debian"
