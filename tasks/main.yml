@@ -1,4 +1,3 @@
-  tasks:
     - name: Install httpd on CentOS
       ansible.builtin.yum:
         name: httpd
@@ -17,3 +16,51 @@
         name: httpd
         state: started
         enabled: yes
+
+    - name: Start the web service on Ubuntu
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install standard tools on CentOS
+      ansible.builtin.yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - git
+        - wget
+        - zip
+        - unzip
+      when: ansible_os_family == "RedHat"
+
+    - name: Install standard tools on Ubuntu
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - git
+        - wget
+        - zip
+        - unzip
+      when: ansible_os_family == "Debian"
+    
+    - name: Install web server
+      package:
+        name: "{{ 'apache2' if ansible_os_family == 'Debian' else 'httpd' }}"
+        state: present
+
+    - name: Ensure web server is running
+      service:
+        name: "{{ 'apache2' if ansible_os_family == 'Debian' else 'httpd' }}"
+        state: started
+        enabled: true
+
+    - name: Deploy status page
+      template:
+        src: status.j2
+        dest: "{{ status_page_path }}"
+        mode: '0644'
+
